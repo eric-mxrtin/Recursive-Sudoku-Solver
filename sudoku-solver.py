@@ -10,18 +10,20 @@ def search_matrix(guess, puzzle, row, row_end, col, col_end, region):
 		return True
 		
 	# recursive call to iterate over the matrix
-	# in the horizontal direction
+	# in the horizontal direction by increasing col
 	if (search_matrix(guess, puzzle, row, row_end, col + 1, col_end, region)):
 		return True
-    # recursive call for iterate down one
-    # row of the matrix, and starting at the starting column of this subsquare
-	return search_matrix(guess, puzzle, row + 1, row_end, region, col_end, region);
-	
-def is_valid(puzzle, guess, row, col):
-	# figures out if the guess at row/col is valid
-	# returns True if valid, False otherwise
+    # recursive call for iterate down one row of the matrix by increasing row
+    # and beginning at the starting column of this subsquare (region)
+	return search_matrix(guess, puzzle, row + 1, row_end, region, col_end, region)
 
-	# validating the row 
+# returns whether or not a guess is valid
+# in sudoku, valid guesses mean that the number
+# does not exist in the same row, column, or 
+# 3x3 subsquare matrix
+def is_valid(puzzle, guess, row, col):
+	
+    # validating the row 
 	row_vals = puzzle[row]
 	if guess in row_vals:
 		return False
@@ -44,50 +46,58 @@ def is_valid(puzzle, guess, row, col):
 	return True
 
 def seek_blank(puzzle):
-	# finds the next row, col on the puzzle that's not filled yet --> rep with X
-	# return row, col tuple (or None, None) if there is none)
+	# seek the next row and column that has a blank square,
+    # represented by a 0, and return this square as a tuple
 
-	# we are using 0 - 8 for our indices
-	for row in range(0,9):
-		for column in range(0,9):
-			if puzzle[row][column] == 0:
-				return row, column
+	# iterate through all rows and colums
+    for row in range(0,9):
+        for column in range(0,9):
+            if puzzle[row][column] == 0:
+                return row, column
 	
-	# if there are no empty spaces
-	return None, None
+	# if there are no empty spaces remaining
+    return None, None
 
 
-
+# solve sudoku board using recursive backtracking technique
+# return whether a solution exists
 def solve_sudoku(puzzle):
-	# solve sudoku using backtracking technique
-	# our puzzle is a list of lists, with each inner list being a row
-	# return whether a solution exists
-	# if solution exists, then output that solution
 
-	# step 1: choose somewhere to make a guess
-	row, column = seek_blank(puzzle)
+    # our board is a list of lists, each inner list being its own row
 
-	# step 1.1: if there are no remaining empty spots, we must be done
-	if row is None:
-		return True
+	# step 0: choose somewhere to make a guess
+    row, column = seek_blank(puzzle)
 
-	# step 2: if there is a place to put a number, then make a guess between 1 and 9
-	for guess in range(1, 10): # range(1, 10) is 1, 2, 3, ... 9
-        # step 3: check if this is a valid guess
-		if is_valid(puzzle, guess, row, column):
-            # step 3.1: if this is a valid guess, then place it at that spot on the puzzle
-			puzzle[row][column] = guess
-            # step 4: then we recursively call our solver!
-			if solve_sudoku(puzzle):
-				return True
-		puzzle[row][column] = 0
+	# step 0.1: if there are no blank spots, then we must have 
+    # solved the board, since only valid guesses are placed
+    if row is None: 
+        print("A solution exists!")
+        return True
 
-	return False
+    # step 1: make a guess from 1 - 9 if there is a blank available
+    for guess in range(1, 10):
+
+    # step 2: only place the guess if it's valid
+        if is_valid(puzzle, guess, row, column):
+
+            puzzle[row][column] = guess
+
+            # step 3: recursively call solver to see if remaining board is
+            # solveable based off of our last guess
+            if solve_sudoku(puzzle):
+                return True
+
+        # step 4: if board was not solveable, reset guesses to blank
+        puzzle[row][column] = 0
+
+    # step 5: return False if no solutions were possible
+    print("A solution does not exist.")
+    return False
 	
 	
 if __name__ == '__main__':
 	
-	valid_board = [
+    valid_board = [
     [3, 9, 0,   0, 5, 0,   0, 0, 0],
     [0, 0, 0,   2, 0, 0,   0, 0, 5],
 	[0, 0, 0,   7, 1, 9,   0, 8, 0],
@@ -101,7 +111,7 @@ if __name__ == '__main__':
     [1, 0, 9,   0, 0, 0,   2, 0, 0]
     ]
 	
-	nonvalid_board = [
+    nonvalid_board = [
 	  [5, 3, 4, 6, 7, 8, 9, 1, 2], 
 	  [6, 7, 2, 1, 9, 0, 3, 4, 8],
 	  [1, 0, 0, 3, 4, 2, 5, 6, 0],
@@ -112,15 +122,17 @@ if __name__ == '__main__':
 	  [2, 8, 7, 4, 1, 9, 6, 3, 5],
 	  [3, 0, 0, 4, 8, 1, 1, 7, 9]
 	]
-	board = valid_board
 
-	print(str(solve_sudoku(board)) + '\n')
-	for row in range(1,10):
-		for column in range(1,10):
-			print(board[row-1][column-1], end = ' ')
-			if (column) % 3 == 0:
-				print('  ', end = '')
-			if column == 9:
-				print()
-		if row % 3 == 0:
-			print()
+    board = nonvalid_board
+
+    (solve_sudoku(board))
+	
+    for row in range(1,10):
+        for column in range(1,10):
+            print(board[row-1][column-1], end = ' ')
+            if (column) % 3 == 0:
+                print('  ', end = '')
+            if column == 9:
+                print()
+        if row % 3 == 0:
+            print()
