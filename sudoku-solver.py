@@ -91,7 +91,6 @@ def solve_sudoku(puzzle):
         puzzle[row][column] = 0
 
     # step 5: return False if no solutions were possible
-    print("A solution does not exist.")
     return False
 	
 	
@@ -125,8 +124,9 @@ if __name__ == '__main__':
 
     board = nonvalid_board
 
-    (solve_sudoku(board))
-	
+    if (solve_sudoku(board)) == False:
+        print("A solution does not exist.")
+
     for row in range(1,10):
         for column in range(1,10):
             print(board[row-1][column-1], end = ' ')
