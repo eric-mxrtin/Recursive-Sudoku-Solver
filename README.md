@@ -6,7 +6,7 @@ In sudoku, a board is solved when there all slots are completely filled, and eac
 Input is accepted as a list of lists, with 0s representing blank squares: 
 
 ```
-3 9 1   8 0 6   4 2 7 --> stored in [[3, 9, 1, 8, 5, 6, 4, 2, 7], ...]
+3 9 1   8 5 6   4 2 7 --> stored in [[3, 9, 1, 8, 5, 6, 4, 2, 7], ...]
 8 0 7   2 3 4   9 1 5   
 4 0 5   0 1 9   6 8 3   
 
