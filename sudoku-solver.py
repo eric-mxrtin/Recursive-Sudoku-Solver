@@ -13,8 +13,8 @@ def search_matrix(guess, puzzle, row, row_end, col, col_end, region):
 	# in the horizontal direction by increasing col
 	if (search_matrix(guess, puzzle, row, row_end, col + 1, col_end, region)):
 		return True
-    # recursive call for iterate down one row of the matrix by increasing row
-    # and beginning at the starting column of this subsquare (region)
+    # tail-recursive call for iterating down one row of the matrix by increasing row
+    # and beginning at the starting column of this subsquare (purpose for region)
 	return search_matrix(guess, puzzle, row + 1, row_end, region, col_end, region)
 
 # returns whether or not a guess is valid
