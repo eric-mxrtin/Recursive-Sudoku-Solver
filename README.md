@@ -19,4 +19,4 @@ Input is accepted as a list of lists, with 0s representing blank squares:
 1 8 0   3 4 7   2 5 0  
 ```
 
-This program returns whether or not a solution exists. If so, it outputs a new board with updated values for the blanks. If not, it outputs the original board. 
+This program returns whether or not a solution exists. If so, it outputs a new board with a correction solution of values for the blanks. If not, it outputs the original board. 

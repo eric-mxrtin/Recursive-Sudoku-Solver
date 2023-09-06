@@ -121,8 +121,8 @@ if __name__ == '__main__':
 	  [2, 8, 7, 4, 1, 9, 6, 3, 5],
 	  [3, 0, 0, 4, 8, 1, 1, 7, 9]
 	]
-
-    board = nonvalid_board
+    # change variable for each test case
+    board = valid_board
 
     if (solve_sudoku(board)) == False:
         print("A solution does not exist.")
